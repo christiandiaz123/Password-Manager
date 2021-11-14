@@ -1,5 +1,6 @@
 import os
 from hashlib import sha256
+#Cmd Tool
 while(True):
     print("Please input a Master Password:")
     masterPassword = input()

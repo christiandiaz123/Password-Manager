@@ -1,7 +1,7 @@
 import pyperclip
 import os
 import json
-#from usefulExceptions import passwordNotFound
+
 passwordFile = "myPasswords.json"
 encPasswordFile = "myPasswords.enc"
 if(os.path.exists(passwordFile)):
