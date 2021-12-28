@@ -30,6 +30,14 @@ def mainMenuFrame(root, myPasswordsDict, password):
             myList[loc - 1].configure(text=val if Switch else '*' * len(val))
             loc += 1
 
+    def copyPassword(errLabel, myPasswordDict, key):
+        from pyperclip import copy
+        if(key in myPasswordDict):
+            copy(myPasswordDict[key])
+            errLabel.config(text="Password Copied")
+        else:
+            errLabel.config(text="No Such Key")
+        errLabel.grid(row=1, column=0, columnspan=3)
     mainFrame = Frame(root)
     navBarFrame = Frame(mainFrame)
     frame = Frame(mainFrame, highlightbackground="blue", highlightthickness=5)
@@ -63,12 +71,23 @@ def mainMenuFrame(root, myPasswordsDict, password):
     settingBtn = Button(navBarFrame, text="Settings", command=lambda : settingsFunc(root, myPasswordsDict, password))
     settingBtn.grid(row=0, column=2, padx=50)
     navBarFrame.grid(row=0, column=0, pady=25)
+
+    getPasswordFrame = Frame(mainFrame)
+    errLabel = Label(getPasswordFrame, text="")
+    getPasswordLabel = Label(getPasswordFrame, text="Enter A Password's Key And Copy It To Your Clipboard:")
+    getPasswordEntry = Entry(getPasswordFrame, width=15)
+    getPasswordBtn = Button(getPasswordFrame, text="Copy", command=lambda: copyPassword(errLabel, myPasswordsDict, getPasswordEntry.get()))
+
+    getPasswordLabel.grid(row=0,column=0, padx=(15,0))
+    getPasswordEntry.grid(row=0, column=1)
+    getPasswordBtn.grid(row=0, column=2, padx=(0, 15))
+    getPasswordFrame.grid(row=2, column=0, pady=20)
     return mainFrame
 
 if(__name__=="__main__"):
     root = Tk()
     from encryptionFunctions import decryptPasswordsToDictionary
-    passwordDict = decryptPasswordsToDictionary("../assets/passwords.enc", "../assets/nonce.binary", "newpassword".encode("utf-8"))
-    mainMenuFrame(root, passwordDict, "newpassword".encode("utf-8")).grid(row=0,column=0)
+    passwordDict = decryptPasswordsToDictionary("../assets/passwords.enc", "../assets/nonce.binary", "oldPassword".encode("utf-8"))
+    mainMenuFrame(root, passwordDict, "oldPassword".encode("utf-8")).grid(row=0,column=0)
     root.mainloop()
 
